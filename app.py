@@ -9,7 +9,7 @@ from tokenreset import token
 from io import BytesIO
 app=Flask(__name__)
 app.secret_key='876@#^%jh'
-app.config['SESSION_TYPE']='filesystem'
+app.config['SESSION_TYPE']='filesystem'   
 app.config['MYSQL_HOST']='localhost'
 app.config['MYSQL_USER']='root'
 app.config['MYSQL_PASSWORD']='admin'
@@ -66,13 +66,6 @@ def home():
     return render_template('home.html',data=data)
 @app.route('/logout')
 def logout():
-    if session.get('user'):
-        session.pop('user')
-        return redirect(url_for('home'))
-    else:
-        flash('already logged out')
-        return redirect(url_for('login'))
-def register():
     if session.get('user'):
         session.pop('user')
         return redirect(url_for('home'))
@@ -147,6 +140,22 @@ def viewmore(blogid):
     data=cursor.fetchone()
     cursor.close()
     return render_template('viewmore.html',data=data)
+@app.route('/search',methods=['POST'])
+def search():
+    if request.method=="POST":
+        name=request.form['search']
+        cursor=mysql.connection.cursor()
+        cursor.execute('select * from blogs where title=%s',[name])
+        data=cursor.fetchall()
+        cursor.close()
+        return render_template('home.html',data=data)
+@app.route('/Categories/<category>',methods=['GET','POST'])
+def Categories(category):
+    cursor=mysql.connection.cursor()
+    cursor.execute('select * from blogs where Categories=%s',[category])
+    data=cursor.fetchall()
+    cursor.close()
+    return render_template('home.html',data=data)
 @app.route('/forgetpassword',methods=['GET','POST'])
 def forget():
     if request.method=='POST':
