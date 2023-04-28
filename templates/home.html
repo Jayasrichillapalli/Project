@@ -12,13 +12,14 @@
           font-family:'Times New Roman', Times, serif;
         }
        body {
-        background-image: url('https://c4.wallpaperflare.com/wallpaper/325/556/25/blue-abstract-black-wave-streak-wallpaper-preview.jpg');
+        background-image: url('https://e1.pxfuel.com/desktop-wallpaper/61/97/desktop-wallpaper-navy-blue-dark-blue-abstract-background.jpg');
         background-size: cover;
        }
        .blog{
         color:white;
         font:bold;
        }
+      
        .navbar-toggler{
         width: 47px;
         height: 34px;
@@ -27,16 +28,6 @@
        }
        .formk{
         background-color:white;
-       }
-       .layoutcard3,.layoutcard4,.layoutcard2{
-        background-color:white;
-        border-radius: 5px;
-        padding: 50px;
-        margin: 40px; 
-        width: 65%;
-        text-decoration: none;
-        overflow: hidden;
-        border: 1px solid #f2f8f9;
        }
     .form1{
       color: white;
@@ -76,26 +67,27 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   overflow: hidden;
-}
-
-.card img {
-  width: 100%;
-  height: auto;
+  background-color: transparent;
+  margin-right: 45%;
+  
 }
 
 .card-content {
   padding: 20px;
 }
 
+
 .card-content h2 {
   font-size: 24px;
   margin-bottom: 10px;
+  color: white;
 }
 
 .card-content p {
   font-size: 16px;
   line-height: 1.5;
   margin-bottom: 20px;
+  color: white;
 }
 
 .read-more {
@@ -105,7 +97,7 @@
   color:white;
   text-decoration: none;
   border-radius: 5px;
-  width:98%;
+  width:99%;
 }
 
 .read-more:hover {
@@ -139,20 +131,9 @@
   background-color:cadetblue;
 
 }
-.kk{
-  margin-left: 60%;
-  
-}
 </style>
 
 </head>
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% for message in messages %}
-   <center><b>{{ message }}</b></center>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
 <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
         
@@ -170,20 +151,20 @@
                   Categories
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Python</a>
-                  <a class="dropdown-item" href="#">Java</a>
-                  <a class="dropdown-item" href="#">HTML</a>
-                  <a class="dropdown-item" href="#">CSS</a>
-                  <a class="dropdown-item" href="#">C++</a>
-                  <a class="dropdown-item" href="#">Data Science</a>
-                  <a class="dropdown-item" href="#">Machine Learning</a>
-                  <a class="dropdown-item" href="#">Artificial Intelligence</a>
-                  <a class="dropdown-item" href="#">React</a>
-                  <a class="dropdown-item" href="#">Django</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='Python')}}">Python</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='Java')}}">Java</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='HTML')}}">HTML</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='CSS')}}">CSS</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='C++')}}">C++</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='Data Science')}}">Data Science</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='Machine Learning')}}">Machine Learning</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='Artificial Intelligence')}}">Artificial Intelligence</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='React')}}">React</a>
+                  <a class="dropdown-item" href="{{url_for('Categories',category='Django')}}">Django</a>
                 </div>
               </li>
             </ul>
-            <ul class="navbar-nav" style="margin-left: 60%;">
+            <ul class="navbar-nav" style="margin-left: 50%;">
               {% if not session.get('user') %}
               <li class="nav-item active">
                 <a class="nav-link" href="{{url_for('register')}}">Register<span class="sr-only">(current)</span></a>
@@ -195,13 +176,23 @@
               <a href="{{url_for('logout')}}"><button class="btn" style="float:right" class="btnstyle">Logout</button></a>
               {% endif %}
               </ul>
-            <form class="form-inline my-2 my-lg-0 ml-auto">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+              <form class="form-inline" method="POST" action="{{url_for('search')}}">
+                <form class="form-inline my-2 my-lg-0 ml-auto">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="search" name="search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+              </form>
           </div>
         </nav>
+  </form>
         <br>
+        {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+   <center><b>{{ message }}</b></center>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
       <body>
         {% if session.get('user') %}
@@ -218,10 +209,8 @@
           <a href="{{url_for('delete',blogid=i[0])}}" class="edit1" style="float:right" >Delete</a>
           <a href="{{url_for('edit',blogid=i[0])}}" class="edit" style="float:right" >Edit</a>
           {% endif %}
-          <div class="kk">
-            <a href="https://www.whatsapp.com/" target="_blank"><i class="fa-brands fa-square-whatsapp"></i></a>
-          </div>
-          <h2>{{i[2]}}</h2>
+         
+          <h2><b>{{i[2]}}</b></h2>
           <p>{{i[3][0:10]}}</p>
           <a href="{{url_for('viewmore',blogid=i[0])}}" class="read-more">View More</a>
         </div>
